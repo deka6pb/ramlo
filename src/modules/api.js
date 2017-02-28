@@ -171,7 +171,8 @@ function produceQueryParameters(method) {
         var description = parameter.description();
         var minLength = "";
         var maxLength = "";
-
+        var repeat;
+        
         //check if name exists
         if (apiQueryParameters.thead.name == false && parameter.name() != null) {
             apiQueryParameters.thead.name = true;
@@ -218,7 +219,10 @@ function produceQueryParameters(method) {
         catch (err) {
         }
 
-
+        if (parameter.repeat && _.isFunction(parameter.repeat)) {
+            repeat = parameter.repeat();
+        }
+        
         apiQueryParameters["tbody"].push({
             name: parameter.name(),
             type: parameter.type(),
@@ -228,7 +232,7 @@ function produceQueryParameters(method) {
             default: parameter.default(),
             minLength: minLength,
             maxLength: maxLength,
-            repeat: parameter.repeat()
+            repeat: repeat
         });
     });
 
